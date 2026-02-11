@@ -1,0 +1,7 @@
+{
+  "name": "Bhai Bhai Decorators & Caterers - Elite Event Planners",
+  "description": "Premium event planning and catering services in Mainaguri, West Bengal, featuring an AI-powered event photo editor.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

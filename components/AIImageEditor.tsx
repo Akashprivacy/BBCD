@@ -1,7 +1,6 @@
-
 import React, { useState, useRef } from 'react';
-import { editImageWithGemini } from '../services/geminiService';
-import { EditStatus } from '../types';
+import { editImageWithGemini } from '../services/geminiService.ts';
+import { EditStatus } from '../types.ts';
 
 const AIImageEditor: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);

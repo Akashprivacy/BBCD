@@ -1,5 +1,4 @@
-
-import { Service, Testimonial, PortfolioItem, VideoItem } from './types';
+import { Service, Testimonial, PortfolioItem, VideoItem } from './types.ts';
 
 export const BUSINESS_NAME = "Bhai Bhai Decorators & Caterers";
 export const BUSINESS_ADDRESS = "Near Maynaguri, Jalpaiguri, West Bengal";

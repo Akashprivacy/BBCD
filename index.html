@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +14,9 @@
         .font-serif {
             font-family: 'Playfair Display', serif;
         }
-        /* Ensure clicking an anchor link doesn't hide the section title under the navbar */
         section {
             scroll-margin-top: 100px;
         }
-        /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -47,5 +44,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 selection:bg-amber-500 selection:text-white">
     <div id="root"></div>
+    <!-- The missing piece: Bootstrapping the app entry point -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>

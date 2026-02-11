@@ -7,86 +7,207 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
-        .font-serif {
-            font-family: 'Playfair Display', serif;
-        }
-        section {
-            scroll-margin-top: 100px;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #05070a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d97706;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f59e0b;
-        }
-        /* Loading indicator for when the JS is transpiling */
-        #root:empty {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #05070a;
-        }
-        #root:empty::after {
-            content: "";
-            width: 32px;
-            height: 32px;
-            border: 2px solid #d97706;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            animation: rotation 1s linear infinite;
-        }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; margin: 0; padding: 0; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        section { scroll-margin-top: 80px; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #05070a; }
+        ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 10px; }
+        @keyframes ken-burns-slow { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        .animate-ken-burns { animation: ken-burns-slow 20s ease-out infinite alternate; }
+        #root:empty { height: 100vh; display: flex; align-items: center; justify-content: center; background: #05070a; }
+        #root:empty::after { content: ""; width: 40px; height: 40px; border: 3px solid #d97706; border-bottom-color: transparent; border-radius: 50%; animation: rotation 1s linear infinite; }
+        @keyframes rotation { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
+</head>
+<body class="bg-white text-slate-900 selection:bg-amber-500 selection:text-white">
+    <div id="root"></div>
+
+    <!-- CDNs for React and Gemini -->
     <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@19",
     "react-dom/client": "https://esm.sh/react-dom@19/client",
     "@google/genai": "https://esm.sh/@google/genai",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
-</head>
-<body class="bg-slate-50 text-slate-900 selection:bg-amber-500 selection:text-white">
-    <div id="root"></div>
-    
-    <!-- The esm.sh/run loader enables browser-side transpilation of TSX files -->
     <script type="module" src="https://esm.sh/run"></script>
 
-    <!-- Main entry point script block -->
     <script type="text/tsx">
-      import React from 'react';
+      import React, { useState, useEffect, useRef } from 'react';
       import ReactDOM from 'react-dom/client';
-      import App from './App.tsx';
+      import { GoogleGenAI } from "@google/genai";
 
-      const rootElement = document.getElementById('root');
-      if (rootElement) {
-        const root = ReactDOM.createRoot(rootElement);
-        root.render(
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
+      // --- Constants & Data ---
+      const BUSINESS_NAME = "Bhai Bhai Decorators";
+      const BUSINESS_SUBTITLE = "Decorators & Caterers";
+      const PHONE = "+91 94341 57802";
+      const ADDRESS = "Near Maynaguri, Jalpaiguri, West Bengal";
+      
+      const SERVICES = [
+        { id: '1', title: 'Luxury Weddings', desc: 'Bespoke management for traditional Bengali ceremonies.', img: 'https://images.unsplash.com/photo-1595967444215-4901e8439907?auto=format&fit=crop&q=80&w=800' },
+        { id: '2', title: 'Gourmet Catering', desc: 'Heritage flavors crafted by master chefs for grand feasts.', img: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&q=80&w=800' },
+        { id: '3', title: 'Thematic Decor', desc: 'Floral artistry and lighting that transforms any space.', img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800' }
+      ];
+
+      // --- Components ---
+
+      const Navbar = () => {
+        const [scrolled, setScrolled] = useState(false);
+        useEffect(() => {
+          const h = () => setScrolled(window.scrollY > 50);
+          window.addEventListener('scroll', h);
+          return () => window.removeEventListener('scroll', h);
+        }, []);
+
+        const scroll = (id) => {
+          const el = document.getElementById(id);
+          if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+        };
+
+        return (
+          <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white shadow-lg py-3' : 'bg-transparent py-6'}`}>
+            <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+              <button onClick={() => scroll('home')} className="text-left">
+                <div className={`text-xl font-bold font-serif leading-none ${scrolled ? 'text-black' : 'text-white'}`}>Bhai Bhai</div>
+                <div className={`text-[8px] uppercase tracking-[0.3em] font-bold mt-1 ${scrolled ? 'text-amber-600' : 'text-amber-400'}`}>Decorators & Caterers</div>
+              </button>
+              <div className="hidden md:flex gap-8 items-center">
+                {['home', 'services', 'ai-studio', 'portfolio', 'contact'].map(item => (
+                  <button key={item} onClick={() => scroll(item)} className={`text-[10px] uppercase font-black tracking-widest ${scrolled ? 'text-slate-600 hover:text-amber-600' : 'text-white/80 hover:text-white'}`}>
+                    {item.replace('-', ' ')}
+                  </button>
+                ))}
+                <button onClick={() => scroll('contact')} className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest ${scrolled ? 'bg-black text-white' : 'bg-white text-black'}`}>Hire Us</button>
+              </div>
+            </div>
+          </nav>
         );
-      }
+      };
+
+      const Hero = () => (
+        <section id="home" className="h-screen relative flex items-center justify-center bg-black overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000" className="absolute inset-0 w-full h-full object-cover opacity-60 animate-ken-burns" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black"></div>
+          <div className="relative z-10 text-center px-6">
+            <h1 className="text-5xl md:text-8xl font-serif text-white font-bold mb-6">আপনার অনুষ্ঠান <br/><span className="text-amber-500 italic">আমাদের দায়িত্ব</span></h1>
+            <p className="text-slate-200 text-lg md:text-2xl font-light mb-10 opacity-90">Premium Event Planning & Catering in Jalpaiguri</p>
+            <button onClick={() => document.getElementById('contact').scrollIntoView({behavior: 'smooth'})} className="bg-amber-600 hover:bg-amber-500 text-white px-10 py-4 rounded-full font-bold tracking-widest text-xs shadow-2xl transition-transform active:scale-95">BOOK YOUR DATE</button>
+          </div>
+        </section>
+      );
+
+      const AIEditor = () => {
+        const [img, setImg] = useState(null);
+        const [prompt, setPrompt] = useState('');
+        const [res, setRes] = useState(null);
+        const [loading, setLoading] = useState(false);
+
+        const handleEdit = async () => {
+          if (!img || !prompt) return;
+          setLoading(true);
+          try {
+            const ai = new GoogleGenAI({ apiKey: window.process?.env?.API_KEY || '' });
+            const [head, data] = img.split(',');
+            const response = await ai.models.generateContent({
+              model: 'gemini-2.5-flash-image',
+              contents: { parts: [{ inlineData: { data, mimeType: 'image/jpeg' } }, { text: prompt }] }
+            });
+            const part = response.candidates[0].content.parts.find(p => p.inlineData);
+            if (part) setRes(`data:${part.inlineData.mimeType};base64,${part.inlineData.data}`);
+          } catch (e) { alert("Error: " + e.message); }
+          setLoading(false);
+        };
+
+        return (
+          <section id="ai-studio" className="py-24 bg-slate-900 text-white">
+            <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+              <div>
+                <span className="text-amber-500 font-bold tracking-widest text-[10px] uppercase mb-4 block">AI Visualizer</span>
+                <h2 className="text-4xl md:text-6xl font-serif font-bold mb-8">Dream it, <br/>See it <span className="text-indigo-400">Instantly</span></h2>
+                <p className="text-slate-400 mb-8 font-light leading-relaxed">Upload a photo of your venue and describe how you want it decorated. Our AI will show you the transformation.</p>
+                <div className="bg-white/5 border border-white/10 p-8 rounded-3xl space-y-6">
+                  <input type="file" accept="image/*" onChange={e => {
+                    const reader = new FileReader();
+                    reader.onload = () => setImg(reader.result);
+                    reader.readAsDataURL(e.target.files[0]);
+                  }} className="text-xs text-slate-400 file:bg-amber-600 file:border-none file:px-4 file:py-2 file:rounded-full file:text-white file:font-bold file:mr-4 cursor-pointer" />
+                  <textarea value={prompt} onChange={e => setPrompt(e.target.value)} placeholder="Describe the decor changes..." className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm focus:outline-none focus:border-amber-500" rows="3" />
+                  <button onClick={handleEdit} disabled={loading || !img} className="w-full bg-amber-600 py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] disabled:opacity-50">{loading ? 'Processing...' : 'Visualize'}</button>
+                </div>
+              </div>
+              <div className="aspect-video bg-black rounded-3xl overflow-hidden border border-white/5 flex items-center justify-center relative shadow-2xl">
+                {res ? <img src={res} className="w-full h-full object-cover" /> : img ? <img src={img} className="w-full h-full object-cover opacity-50" /> : <div className="text-slate-700 font-serif italic">Your transformation appears here</div>}
+                {loading && <div className="absolute inset-0 bg-black/60 flex items-center justify-center"><div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      const Services = () => (
+        <section id="services" className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900">Elite Services</h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-10">
+              {SERVICES.map(s => (
+                <div key={s.id} className="group rounded-[2rem] overflow-hidden bg-slate-50 border border-slate-100 transition-all hover:shadow-2xl">
+                  <div className="h-64 overflow-hidden"><img src={s.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" /></div>
+                  <div className="p-10 text-center">
+                    <h4 className="text-xl font-bold mb-4">{s.title}</h4>
+                    <p className="text-slate-500 text-sm font-light leading-relaxed">{s.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+
+      const Contact = () => (
+        <section id="contact" className="py-24 bg-slate-50">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+             <h2 className="text-4xl font-serif font-bold mb-6">Let's Talk Events</h2>
+             <p className="text-slate-500 mb-12">Located in {ADDRESS}</p>
+             <div className="flex flex-col md:flex-row gap-6 justify-center">
+                <a href={`tel:${PHONE}`} className="bg-black text-white px-12 py-5 rounded-full font-bold tracking-widest text-[10px] uppercase hover:scale-105 transition-transform">Call: {PHONE}</a>
+                <a href="https://wa.me/919434157802" target="_blank" className="bg-green-600 text-white px-12 py-5 rounded-full font-bold tracking-widest text-[10px] uppercase hover:scale-105 transition-transform">WhatsApp Us</a>
+             </div>
+          </div>
+        </section>
+      );
+
+      const App = () => (
+        <div className="min-h-screen">
+          <Navbar />
+          <Hero />
+          <Services />
+          <AIEditor />
+          <section id="portfolio" className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-6 text-center">
+              <h2 className="text-4xl font-serif font-bold mb-12">Gallery Highlights</h2>
+              <div className="columns-2 md:columns-3 gap-6 space-y-6">
+                 {[1,2,3,4,5,6].map(i => (
+                   <img key={i} src={`https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800&sig=${i}`} className="w-full rounded-2xl shadow-lg" />
+                 ))}
+              </div>
+            </div>
+          </section>
+          <Contact />
+          <footer className="py-12 bg-black text-slate-500 text-center text-[10px] uppercase font-bold tracking-[0.3em]">
+            © {new Date().getFullYear()} Bhai Bhai Decorators & Caterers.
+          </footer>
+        </div>
+      );
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
     </script>
 </body>
 </html>

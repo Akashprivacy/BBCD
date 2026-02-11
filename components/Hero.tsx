@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const Hero: React.FC = () => {
@@ -14,100 +15,92 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-[#05070a]">
+    <section id="home" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[#0a0806]">
       {/* Background Container with Motion */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <img 
-            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2000" 
-            alt="Elite Bengali Wedding Backdrop" 
-            className="w-full h-full object-cover animate-ken-burns"
+            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=2000" 
+            alt="Grand Bengali Wedding Decor" 
+            className="w-full h-full object-cover animate-ken-burns opacity-60"
           />
         </div>
         
-        {/* Dynamic Overlay Layers */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90 z-10"></div>
-        <div className="absolute inset-0 bg-indigo-900/10 mix-blend-overlay z-10"></div>
+        {/* Cinematic Overlays - Darker at top to help navbar legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-[#0a0806] z-10"></div>
+        <div className="absolute inset-0 bg-amber-900/10 mix-blend-overlay z-10"></div>
       </div>
 
       <style>{`
         @keyframes ken-burns-slow {
-          0% { transform: scale(1) translate(0, 0); }
-          100% { transform: scale(1.15) translate(-1%, -1%); }
+          0% { transform: scale(1); }
+          100% { transform: scale(1.2); }
         }
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes shine {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
+          50% { transform: translateY(-12px); }
         }
         .animate-ken-burns {
-          animation: ken-burns-slow 30s ease-out infinite alternate;
+          animation: ken-burns-slow 35s ease-out infinite alternate;
         }
         .animate-float {
-          animation: float 3s ease-in-out infinite;
+          animation: float 6s ease-in-out infinite;
         }
-        .hover-shine:hover::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-          animation: shine 0.6s ease-in-out;
+        /* Specific Fix for Bengali character rendering/clipping across all browsers */
+        .bengali-line {
+          display: block;
+          line-height: 1.6;
+          padding-bottom: 0.1em;
+          margin-bottom: -0.1em;
         }
       `}</style>
 
-      <div className="relative z-20 text-center px-6 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
-          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-          <span className="text-[9px] md:text-xs font-bold tracking-[0.5em] text-amber-400 uppercase">
-            West Bengal's Elite Event Partner
+      {/* Content Wrapper - Using generous pt-40 to avoid navbar logo overlap completely on mobile */}
+      <div className="relative z-20 text-center px-6 max-w-6xl mx-auto pt-40 pb-24 md:pt-48 flex flex-col items-center animate-in fade-in slide-in-from-bottom-12 duration-1000">
+        
+        {/* Redesigned Badge - Premium Glassmorphism with better contrast */}
+        <div className="mb-10 md:mb-14 inline-flex items-center justify-center gap-3 px-6 md:px-10 py-3 md:py-4 rounded-full bg-black/40 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+          <span className="shrink-0 w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse shadow-[0_0_15px_rgba(245,158,11,0.8)]"></span>
+          <span className="text-[9px] md:text-[11px] font-black tracking-[0.5em] md:tracking-[0.7em] text-white uppercase whitespace-nowrap">
+            Premium Event Concierge
           </span>
         </div>
         
-        <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold font-serif text-white mb-6 leading-[1.2] drop-shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
-          আপনার অনুষ্ঠান <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600 italic">আমাদের দায়িত্ব</span>
+        {/* Heading - Responsive scaling with specific line spacing for Bengali script */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7.5rem] font-bold font-serif text-white mb-8 tracking-tight drop-shadow-[0_10px_40px_rgba(0,0,0,1)]">
+          <span className="bengali-line">আপনার অনুষ্ঠান</span>
+          <span className="bengali-line text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-100 to-amber-600 italic">আমাদের দায়িত্ব</span>
         </h1>
         
-        <p className="text-base md:text-2xl text-slate-200 font-light mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow-md opacity-90">
-          "ঐতিহ্যের ছোঁয়ায় সাজাবো আপনার জীবনের শ্রেষ্ঠ দিন"
+        <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-slate-200 font-light mb-12 md:mb-16 max-w-2xl mx-auto leading-relaxed drop-shadow-lg italic px-4">
+          "Timeless elegance, authentic heritage, and cinematic grandeur for your milestone moments in Jalpaiguri."
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-5 md:gap-8 justify-center items-center w-full sm:w-auto">
           <button 
             onClick={() => scrollToSection('contact')} 
-            className="hover-shine relative group w-full sm:w-auto px-12 py-5 bg-amber-600 hover:bg-amber-500 text-white rounded-full font-bold transition-all shadow-xl shadow-amber-900/20 flex items-center justify-center gap-3 overflow-hidden cursor-pointer"
+            className="group w-full sm:w-auto px-12 md:px-16 py-5 md:py-6 bg-gradient-to-r from-amber-600 to-rose-600 text-white rounded-full font-bold transition-all shadow-2xl shadow-rose-950/40 flex items-center justify-center gap-3 active:scale-95 hover:brightness-110"
           >
-            <span className="relative z-10 tracking-[0.3em] uppercase text-[10px]">BOOK YOUR DATE</span>
-            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span className="tracking-[0.3em] uppercase text-[10px] font-black">BOOK YOUR DATE</span>
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </button>
           <button 
             onClick={() => scrollToSection('portfolio')} 
-            className="group w-full sm:w-auto px-12 py-5 bg-white/5 hover:bg-white/10 text-white backdrop-blur-2xl border border-white/20 rounded-full font-bold transition-all tracking-[0.3em] uppercase text-[10px] flex items-center justify-center gap-3 cursor-pointer"
+            className="w-full sm:w-auto px-12 md:px-16 py-5 md:py-6 bg-white/5 hover:bg-white/10 text-white backdrop-blur-xl border border-white/20 rounded-full font-bold transition-all tracking-[0.3em] uppercase text-[10px] flex items-center justify-center shadow-xl font-black active:scale-95"
           >
-            VIEW PORTFOLIO
-            <svg className="w-4 h-4 group-hover:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16" />
-            </svg>
+            EXPLORE GALLERY
           </button>
         </div>
       </div>
 
-      {/* Floating Scroll Indicator */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20">
-        <button onClick={() => scrollToSection('services')} className="flex flex-col items-center gap-3 group animate-float cursor-pointer focus:outline-none">
-          <span className="text-[9px] text-amber-500/60 uppercase tracking-[0.5em] group-hover:text-amber-500 transition-colors">Scroll</span>
-          <div className="relative w-6 h-10 border-2 border-white/20 rounded-full flex justify-center p-1">
-            <div className="w-1 h-2 bg-amber-500 rounded-full animate-bounce"></div>
-          </div>
-        </button>
+      {/* Floating Scroll Indicator - Adjusted for better mobile visibility */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-4 opacity-50">
+        <span className="text-[10px] text-amber-500 font-black uppercase tracking-[0.6em]">Scroll</span>
+        <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center p-1.5 animate-float">
+          <div className="w-1.5 h-2.5 bg-amber-500 rounded-full animate-bounce"></div>
+        </div>
       </div>
     </section>
   );
